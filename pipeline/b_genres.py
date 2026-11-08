@@ -17,20 +17,24 @@ B = Path("build")
 TOP = 8000                                   # the most-charted artists (they hold almost all chart points)
 UA = {"User-Agent": "30DMC26-WorldMusicCharts/1.0 (GitHub Actions; educational map)", "Accept": "application/sparql-results+json"}
 
-FAMILY = [  # (family, keywords) — checked in this order, so specific scenes win over "pop" or "rock"
-    ("East Asian pop", r"k-pop|j-pop|j-rock|anime|city pop|c-pop|mandopop|cantopop|korean|japanese|k-hip|j-hip|visual kei|enka|kayōkyoku|idol"),
-    ("Regional Latin", r"corrido|banda|norte[nñ]o|regional mexican|mariachi|ranchera|cumbia|sierre[nñ]o|grupero|bachata|vallenato|salsa|merengue|cuarteto|tango|bolero"),
-    ("Brazilian", r"sertanejo|funk carioca|brazilian|funk brasileiro|pagode|forr[oó]|ax[eé]|mpb|piseiro|arrocha|samba|bossa"),
-    ("Afro & Caribbean", r"afro|amapiano|bongo flava|gengetone|highlife|kwaito|gqom|dancehall|soca|reggae(?!ton)|zouk|kizomba|chimurenga|zimdancehall|benga|taarab|singeli|rumba congolaise|soukous|naija"),
-    ("Latin pop & urban", r"reggaet|latin trap|urbano|dembow|latin hip|moombahton|latin pop|latin music|perreo|latin r&b|trap latino"),
-    ("Hip hop & rap", r"hip hop|hip-hop|rap|trap|drill|grime|gangsta|boom bap|crunk|phonk"),
-    ("R&B & soul", r"r&b|rhythm and blues|soul|funk|gospel|motown|quiet storm"),
-    ("Electronic & dance", r"electro|house|techno|edm|dance music|trance|dubstep|drum and bass|eurodance|hardstyle|hardcore|garage|disco(?! polo)|ambient|idm|breakbeat|future bass"),
-    ("Rock & indie", r"rock|metal|punk|indie|alternative|grunge|emo|shoegaze|post-|new wave|britpop"),
-    ("Country", r"country|americana|bluegrass|honky"),
-    ("Local & folk", r"schlager|folk|manele|turbo|arabesk|chanson|disco polo|volks|fado|flamenco|chalga|traditional|world music|filmi|bollywood|estrada|canzone|cantautor|italo|neomelodic|sevdah|halk|türkü|fantezi|tallava|opera|classical|musical|soundtrack|children"),
-    ("Pop", r"pop|ballad|singer-songwriter|soft rock|adult contemporary"),
+B_ = r"(?<![a-z])"                             # word start: "folk-pop" must not match "k-pop"
+FAMILY = [  # (family, keywords) — checked in this order for each genre, so specific scenes win over "pop" or "rock"
+    ("East Asian pop", B_ + r"(k-pop|j-pop|j-rock|anime|city pop|c-pop|mandopop|cantopop|korean|japanese|k-hip|j-hip|visual kei|enka|kayōkyoku|idol)"),
+    ("Regional Latin", B_ + r"(corrido|banda|norte[nñ]o|regional mexican|mariachi|ranchera|cumbia|sierre[nñ]o|grupero|bachata|vallenato|salsa|merengue|cuarteto|tango|bolero)"),
+    ("Brazilian", B_ + r"(sertanejo|funk carioca|brazilian|funk brasileiro|pagode|forr[oó]|ax[eé]|mpb|piseiro|arrocha|samba|bossa)"),
+    ("Afro & Caribbean", B_ + r"(afro|amapiano|bongo flava|gengetone|highlife|kwaito|gqom|dancehall|soca|reggae(?!ton)|zouk|kizomba|chimurenga|zimdancehall|benga|taarab|singeli|rumba congolaise|soukous|naija)"),
+    ("Latin pop & urban", B_ + r"(reggaet|latin trap|urbano|dembow|latin hip|moombahton|latin pop|latin music|perreo|latin r&b|trap latino)"),
+    ("Hip hop & rap", B_ + r"(hip hop|hip-hop|rap|trap|drill|grime|gangsta|boom bap|crunk|phonk)"),
+    ("R&B & soul", B_ + r"(r&b|rhythm and blues|soul|funk|gospel|motown|quiet storm|new jack swing)"),
+    ("Country", B_ + r"(country|americana|bluegrass|honky)"),
+    ("Pop", B_ + r"(pop rock|pop punk|power pop|electropop|synth-pop|synthpop|dance-pop|teen pop|pop music|pop)$"),
+    ("Electronic & dance", B_ + r"(electro|house|techno|edm|dance music|trance|dubstep|drum and bass|eurodance|hardstyle|hardcore|garage|disco(?! polo)|ambient|idm|breakbeat|future bass)"),
+    ("Rock & indie", B_ + r"(rock|metal|punk|indie|alternative|grunge|emo|shoegaze|post-|new wave|britpop|psychedel|neo-psychedel)"),
+    ("Local & folk", B_ + r"(schlager|folk|manele|turbo|arabesk|chanson|disco polo|volks|fado|flamenco|chalga|traditional|world music|filmi|bollywood|estrada|canzone|cantautor|italo|neomelodic|sevdah|halk|türkü|fantezi|tallava|opera|classical|musical|soundtrack|children)"),
+    ("Pop", B_ + r"(pop|ballad|singer-songwriter|soft rock|adult contemporary)"),
 ]
+TIE = ["East Asian pop", "Regional Latin", "Brazilian", "Afro & Caribbean", "Hip hop & rap", "R&B & soul", "Pop", "Country",
+       "Latin pop & urban", "Electronic & dance", "Rock & indie", "Local & folk"]       # ties go to the more specific scene, but Pop beats Latin/Rock
 FAMS = [f for f, _ in FAMILY]
 
 
@@ -42,7 +46,7 @@ def family(genres):
             if re.search(rx, g): hits[f] += 1; break
     if not hits: return "Unclassified"
     top = max(hits.values())
-    return min((f for f, n in hits.items() if n == top), key=FAMS.index)
+    return min((f for f, n in hits.items() if n == top), key=TIE.index)
 
 
 def name_search(names, home):

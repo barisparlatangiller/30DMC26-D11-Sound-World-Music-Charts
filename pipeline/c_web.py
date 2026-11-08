@@ -36,8 +36,9 @@ art = pd.read_parquet(B / "artists.parquet")
 so = pd.read_parquet(B / "songs.parquet")
 cov = json.loads((B / "coverage.json").read_text())
 gp = B / "genres.parquet"
-gen = pd.read_parquet(gp).set_index("akey").family if gp.exists() else pd.Series(dtype=str)
-art["family"] = gen.reindex(art.index).fillna("Unclassified")
+gdf = pd.read_parquet(gp).set_index("akey") if gp.exists() else pd.DataFrame(columns=["family", "genres"])
+art["family"] = gdf.family.reindex(art.index).fillna("Unclassified")
+art["genres"] = gdf.genres.reindex(art.index).fillna("")
 
 # countries (Natural Earth 1:50m)
 f = B / "ne_50m.geojson"
@@ -68,7 +69,7 @@ ccs = sorted(set(ac.cc))
 akeys = list(art.index[:N_ARTISTS]); aidx = {k: i for i, k in enumerate(akeys)}
 home = art.home.to_dict(); fam = art.family.to_dict()
 
-out = {"families": FAMS, "coverage": cov, "countries": {}, "views": {p: {} for p in PL + ["both"]}, "labels": {cc: LABEL[cc] for cc in ccs if cc in LABEL}}
+out = {"genre_coverage": None, "families": FAMS, "coverage": cov, "countries": {}, "views": {p: {} for p in PL + ["both"]}, "labels": {cc: LABEL[cc] for cc in ccs if cc in LABEL}}
 for _, r in lang.iterrows():
     out["countries"][r.cc] = {"name": r.country_tr, "lang": r.main_language, "region": r.region}
 names_en = dict(zip(ne.cc, ne.name)); names_en["global"] = "Global"
@@ -131,7 +132,8 @@ for view in PL + ["both"]:
 
 # artists → world
 ccx = {cc: i for i, cc in enumerate(ccs)}
-A = {"cc": ccs, "artists": [[art.name.get(k, k), FAMS.index(fam.get(k, "Unclassified")), home.get(k) if isinstance(home.get(k), str) else ""] for k in akeys], "reach": {}}
+A = {"cc": ccs, "artists": [[art.name.get(k, k), FAMS.index(fam.get(k, "Unclassified")), home.get(k) if isinstance(home.get(k), str) else "",
+                              art.genres.get(k, "")] for k in akeys], "reach": {}}
 for view in PL + ["both"]:
     R = [[] for _ in akeys]
     for (v, cc), s in vec.items():
@@ -163,6 +165,7 @@ out["facts"] = {
     "widest_reach": reach[:10],
     "genre_world": dict(zip(FAMS, [round(x, 3) for x in (np.array([bv[cc]["genre"] for cc in real]).mean(0))])),
 }
+out["genre_coverage"] = {cc: round(1 - v["genre"][-1], 3) for cc, v in out["views"]["both"].items()}
 (W / "music.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
 
 ne.to_file(W / "countries.geojson", driver="GeoJSON", COORDINATE_PRECISION=3)

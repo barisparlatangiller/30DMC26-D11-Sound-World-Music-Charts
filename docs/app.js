@@ -118,7 +118,7 @@ function legend() {
   const f = S.M.facts; let h = "", note = "";
   if (S.view === "genre") {
     h = `<div class="chips">${S.F.slice(0, -1).map((g, i) => `<button class="chip ${S.genre === i ? "on" : ""}" data-g="${i}"><i class="dot" style="background:${FAMC[g]}"></i>${g}</button>`).join("")}</div>`;
-    note = S.genre == null ? "Colour: the genre family with the most chart points in each country (brighter = more dominant). Labels: the country's #1 artist of 2026. Tap a genre to map its share."
+    note = S.genre == null ? `Colour: the genre family with the most chart points in each country (brighter = more dominant). Labels: the country's #1 artist of 2026. Tap a genre to map its share. Genres come from Wikidata and are known for ${Math.round(100 * Object.values(S.M.genre_coverage).reduce((a, b) => a + b, 0) / Object.values(S.M.genre_coverage).length)}% of chart points on average (from ${Math.round(100 * Math.min(...Object.values(S.M.genre_coverage)))}% to ${Math.round(100 * Math.max(...Object.values(S.M.genre_coverage)))}% by country); many local artists have no genre there yet.`
       : `Share of all chart points that go to ${S.F[S.genre]} artists. Tap it again to go back.`;
   } else if (S.view === "home") {
     h = `<div class="ramp" style="background:linear-gradient(90deg,${HOME.map(s => s[1]).join(",")})"></div><div class="ends"><span>mostly imported</span><span>mostly home-grown</span></div>`;
@@ -126,7 +126,7 @@ function legend() {
   } else if (S.view === "artist") {
     const a = S.A.artists[S.artist];
     h = `<div class="chips">${[[1, "#1"], [3, "top 3"], [10, "top 10"], [50, "top 50"], [999, "charted"]].map(([r, t]) => `<span class="chip"><i class="dot" style="background:${RANKC(r)}"></i>${t}</span>`).join("")}</div>`;
-    note = `<b style="color:#fff">${esc(a[0])}</b> · ${S.F[a[1]]}${a[2] ? " · from " + esc(cname(a[2])) : ""}. Rank among all artists in each country's 2026 charts. Widest reach (top 10 in most countries): ${f.widest_reach.slice(0, 4).map(x => `${x[0]} (${x[1]})`).join(", ")}.`;
+    note = `<b style="color:#fff">${esc(a[0])}</b> · ${S.F[a[1]]}${a[2] ? " · from " + esc(cname(a[2])) : ""}${a[3] ? ` <span style="opacity:.75">(Wikidata: ${esc(a[3].split("; ").slice(0, 5).join(", "))})</span>` : ""}. Rank among all artists in each country's 2026 charts. Widest reach (top 10 in most countries): ${f.widest_reach.slice(0, 4).map(x => `${x[0]} (${x[1]})`).join(", ")}.`;
   } else if (S.view === "gap") {
     h = `<div class="ramp" style="background:linear-gradient(90deg,${GAP.map(s => s[1]).join(",")})"></div><div class="ends"><span>different worlds</span><span>the same charts</span></div>`;
     note = `How much the Spotify and YouTube charts of a country share the same artists (overlap of artist shares). Most different: ${f.platform_gap.filter(x => x[0] !== "Global").slice(0, 3).map(x => `${x[0]} ${pct(x[1])}`).join(", ")}. Most alike: ${f.platform_alike.slice(-3).reverse().map(x => `${x[0]} ${pct(x[1])}`).join(", ")}.`;
@@ -152,7 +152,7 @@ function card() {
   $("#card").innerHTML = `<div class="flag">${flag(cc)}</div><h2>${esc(cname(cc))}</h2><div class="sub">${wk} · ${v.n_artists.toLocaleString("en-US")} artists charted · ${esc(S.M.countries[cc]?.lang || "")}</div>
     <div class="n1"><div class="eb">#1 artist of 2026 · ${S.plat === "both" ? "Spotify + YouTube" : S.plat === "spotify" ? "Spotify" : "YouTube"}</div><b>${esc(v.number1)}</b>
       <span>${pct(v.artists[0][1], 1)} of all chart points · ${S.F[v.artists[0][2]]}${v.artists[0][3] ? " · from " + esc(cname(v.artists[0][3])) : ""}</span></div>
-    <h3>Genres</h3><div class="bar">${g.map((x, i) => `<i title="${S.F[i]} ${pct(x)}" style="width:${100 * x}%;background:${FAMC[S.F[i]]}"></i>`).join("")}</div>
+    <h3>Genres <span style="text-transform:none;letter-spacing:0;font-weight:400">· known for ${pct(1 - g[g.length - 1])} of chart points</span></h3><div class="bar">${g.map((x, i) => `<i title="${S.F[i]} ${pct(x)}" style="width:${100 * x}%;background:${FAMC[S.F[i]]}"></i>`).join("")}</div>
     <div class="bl">${g.map((x, i) => [x, i]).filter(x => x[0] >= 0.04).sort((a, b) => b[0] - a[0]).map(([x, i]) => `<span><i class="dot" style="background:${FAMC[S.F[i]]}"></i> ${S.F[i]} ${pct(x)}</span>`).join("")}</div>
     <h3>Where the music comes from</h3><div class="bar"><i style="width:${100 * h.home}%;background:#ff5fa2"></i><i style="width:${100 * h.us}%;background:#5b8def"></i><i style="width:${100 * h.other}%;background:#ffd23f"></i><i style="width:${100 * h.unknown}%;background:#3a3658"></i></div>
     <div class="bl"><span><i class="dot" style="background:#ff5fa2"></i> home-grown ${pct(h.home)}</span><span><i class="dot" style="background:#5b8def"></i> US ${pct(h.us)}</span><span><i class="dot" style="background:#ffd23f"></i> elsewhere ${pct(h.other)}</span><span><i class="dot" style="background:#3a3658"></i> unknown ${pct(h.unknown)}</span></div>
