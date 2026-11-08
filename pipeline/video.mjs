@@ -34,6 +34,7 @@ const settle = p => p.evaluate(() => new Promise(r => { let d = false; const f =
 
 const CSS = `
   #head, #card, #foot, #player, .maplibregl-ctrl-bottom-right { display: none !important; }
+  #map { inset: 400px 0 230px 0 !important; }
   .v { position: absolute; z-index: 6; left: 50px; right: 50px; font-family: Inter; color: #f3f1fb; }
   .v.top { top: 46px; }
   .v .eb { font-size: 19px; letter-spacing: .18em; text-transform: uppercase; color: #8d88aa; font-weight: 600; }
@@ -73,7 +74,7 @@ const FAMC = { "Pop": "#ff5fa2", "Hip hop & rap": "#ffd23f", "Latin pop & urban"
 const scene = (p, o) => p.evaluate(({ o, FAMC }) => {
   const f = S.M.facts, pc = x => Math.round(100 * x) + "%";
   if (o.view !== S.view || o.twin !== S.twin) { if (o.fade != null) S.prev = { ...S.cols }; S.view = o.view; if (o.twin) S.twin = o.twin; }
-  S.fadeK = o.fade ?? 1; S.map.jumpTo({ center: o.center, zoom: o.zoom, bearing: 0, pitch: 0, padding: { top: 400, bottom: 300, left: 0, right: 0 } }); paint();
+  S.fadeK = o.fade ?? 1; S.map.jumpTo({ center: o.center, zoom: o.zoom, bearing: 0, pitch: 0 }); paint();
   const VV = document.getElementById("vv"), VB = document.getElementById("vb");
   if (o.view === "genre") {
     VV.innerHTML = `What the world played<small>Colour = each country's main genre. Label = its #1 artist of 2026 (Spotify + YouTube).</small>`;
@@ -109,7 +110,7 @@ const scene = (p, o) => p.evaluate(({ o, FAMC }) => {
 // ── 3 posters ──
 let p = await open();
 for (const [name, o] of [["post1_genres", { view: "genre", center: [5, 30], zoom: 2.1 }], ["post2_homegrown", { view: "home", center: [12, 22], zoom: 2.15 }],
-  ["post3_twins", { view: "twins", twin: "gb", center: [10, 40], zoom: 2.25 }], ["post3b_spotify_vs_youtube", { view: "gap", center: [5, 30], zoom: 2.2 }]]) {
+  ["post3_twins", { view: "twins", twin: "gb", center: [10, 42], zoom: 2.35 }], ["post3b_spotify_vs_youtube", { view: "gap", center: [5, 30], zoom: 2.2 }]]) {
   await scene(p, o); await settle(p); await p.evaluate(() => placeLabels()); await p.waitForTimeout(500);
   await p.screenshot({ path: `${OUT}/${name}.png` }); console.log("poster", name);
 }
