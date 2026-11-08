@@ -1,0 +1,44 @@
+cc,iso3,country_tr,main_language,english_official,main_language_speakers_m,region
+tr,TUR,Türkiye,Türkçe,0,90,Batı Asya
+us,USA,ABD,İngilizce,1,1500,Kuzey Amerika
+gb,GBR,Birleşik Krallık,İngilizce,1,1500,Batı Avrupa
+ie,IRL,İrlanda,İngilizce,1,1500,Batı Avrupa
+au,AUS,Avustralya,İngilizce,1,1500,Okyanusya
+nz,NZL,Yeni Zelanda,İngilizce,1,1500,Okyanusya
+ca,CAN,Kanada,İngilizce,1,1500,Kuzey Amerika
+de,DEU,Almanya,Almanca,0,135,Batı Avrupa
+at,AUT,Avusturya,Almanca,0,135,Batı Avrupa
+ch,CHE,İsviçre,Almanca,0,135,Batı Avrupa
+lu,LUX,Lüksemburg,Fransızca,0,310,Batı Avrupa
+fr,FRA,Fransa,Fransızca,0,310,Batı Avrupa
+be,BEL,Belçika,Flamanca,0,25,Batı Avrupa
+nl,NLD,Hollanda,Flamanca,0,25,Batı Avrupa
+es,ESP,İspanya,İspanyolca,0,560,Güney Avrupa
+mx,MEX,Meksika,İspanyolca,0,560,Latin Amerika
+ar,ARG,Arjantin,İspanyolca,0,560,Latin Amerika
+cl,CHL,Şili,İspanyolca,0,560,Latin Amerika
+co,COL,Kolombiya,İspanyolca,0,560,Latin Amerika
+pe,PER,Peru,İspanyolca,0,560,Latin Amerika
+it,ITA,İtalya,İtalyanca,0,68,Güney Avrupa
+pt,PRT,Portekiz,Portekizce,0,260,Güney Avrupa
+br,BRA,Brezilya,Portekizce,0,260,Latin Amerika
+dk,DNK,Danimarka,Danca,0,6,Kuzey Avrupa
+se,SWE,İsveç,İsveççe,0,13,Kuzey Avrupa
+no,NOR,Norveç,Norveççe,0,5,Kuzey Avrupa
+fi,FIN,Finlandiya,Fince,0,5.5,Kuzey Avrupa
+is,ISL,İzlanda,İzlandaca,0,0.35,Kuzey Avrupa
+ee,EST,Estonya,Estonca,0,1.1,Kuzey Avrupa
+pl,POL,Polonya,Lehçe,0,40,Doğu Avrupa
+cz,CZE,Çekya,Çekçe,0,11,Doğu Avrupa
+ro,ROU,Romanya,Rumence,0,25,Doğu Avrupa
+rs,SRB,Sırbistan,Sırpça,0,10,Doğu Avrupa
+ru,RUS,Rusya,Rusça,0,255,Doğu Avrupa
+ua,UKR,Ukrayna,Ukraynaca,0,40,Doğu Avrupa
+jp,JPN,Japonya,Japonca,0,125,Doğu Asya
+kr,KOR,Güney Kore,Korece,0,80,Doğu Asya
+za,ZAF,Güney Afrika,İngilizce (resmî dillerden biri),1,1500,Afrika
+ng,NGA,Nijerya,İngilizce (resmî),1,1500,Afrika
+ke,KEN,Kenya,Svahili ve İngilizce,1,90,Afrika
+tz,TZA,Tanzanya,Svahili,0,90,Afrika
+ug,UGA,Uganda,İngilizce ve Svahili,1,1500,Afrika
+zw,ZWE,Zimbabve,İngilizce ve Shona,1,1500,Afrika

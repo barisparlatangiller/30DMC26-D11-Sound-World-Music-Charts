@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Geography of Sound</title>
+<meta name="description" content="#30DayMapChallenge 2026 · Day 11 · Sound. What 43 countries listened to on Spotify and YouTube in 2026: artists, songs, genres, home-grown music and musical twins.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.0/dist/maplibre-gl.css" rel="stylesheet">
+<link href="style.css?v=1" rel="stylesheet">
+</head>
+<body>
+<div id="stars"></div>
+<div id="map"></div>
+
+<header class="glass" id="head">
+  <div class="eb">#30DayMapChallenge · Day 11 · Sound · 2026</div>
+  <h1>The Geography <span>of Sound</span></h1>
+  <p class="q">What 43 countries listened to in 2026, on Spotify and YouTube. Pick a view, a platform, a country, a genre or an artist.</p>
+  <nav class="tabs" id="views">
+    <button data-v="genre" class="on">Genres</button><button data-v="home">Home-grown</button><button data-v="artist">Artist</button>
+    <button data-v="gap">Spotify vs YouTube</button><button data-v="twins">Musical twins</button>
+  </nav>
+  <div class="row">
+    <div class="seg" id="plat"><button data-p="both" class="on">Both</button><button data-p="spotify">Spotify</button><button data-p="youtube">YouTube</button></div>
+    <div class="search hidden" id="asearch"><input id="aq" placeholder="Search an artist…" autocomplete="off"><div id="alist"></div></div>
+  </div>
+  <div id="legend"></div>
+  <div class="fine" id="vnote"></div>
+</header>
+
+<aside class="glass" id="card"></aside>
+
+<div class="glass player hidden" id="player"><button class="x" id="px">×</button><div id="pframe"></div></div>
+
+<footer class="glass" id="foot">
+  <span id="cov"></span> · <a href="#" id="about-b">About</a>
+</footer>
+
+<section class="glass about hidden" id="about">
+  <button class="x" id="ax">×</button>
+  <h2>About this map</h2>
+  <p><b>Charts.</b> Spotify weekly Top 200 for 37 countries + global (Türkiye and global weekly, the others every 4 weeks) and YouTube
+    weekly Top 100 for 43 countries + global, from the open archive on Zenodo (record 23645386, CC BY 4.0). Period: 1 January –
+    15 October 2026, the last week in the archive.</p>
+  <p><b>Points.</b> A chart position is worth (N + 1 − rank) / N, shared by the credited artists, and averaged over the charted weeks so
+    weekly and 4-weekly charts compare. An artist's share is its part of all points in that country. "Both" averages the Spotify and
+    YouTube shares.</p>
+  <p><b>Genres.</b> From Wikidata (genre, P136), matched by the artists' Spotify and Google IDs, grouped into 12 families by keyword.
+    Artists without a Wikidata genre are "unclassified". <b>Home-grown</b>: the artist's home country from the archive (Wikidata or
+    chart origin); the US includes Puerto Rico.</p>
+  <p><b>Spotify vs YouTube</b>: overlap of the two artist shares (1 = identical). <b>Musical twins</b>: cosine similarity of two countries'
+    artist shares.</p>
+  <p><b>Limits.</b> Charts show the most-streamed songs, not all listening; Spotify streams and YouTube views are different scales, so
+    only ranks are used. Countries without charts in the archive are grey.</p>
+  <p class="fine">Data: Zenodo 23645386 (CC BY 4.0), Spotify Charts, YouTube Charts · genres: Wikidata (CC0) · borders: Natural Earth.
+    Song links open Spotify or YouTube. Barış Parlatangiller, built with Claude ·
+    <a href="https://github.com/barisparlatangiller/30DMC26-D11-Sound-World-Music-Charts" target="_blank" rel="noopener">code</a> ·
+    <a href="data/world_music_2026.gpkg">GeoPackage</a> ·
+    <a href="https://barisparlatangiller.github.io/" target="_blank" rel="noopener">all maps</a></p>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.6.0/dist/maplibre-gl.js"></script>
+<script src="app.js?v=1"></script>
+</body>
+</html>
