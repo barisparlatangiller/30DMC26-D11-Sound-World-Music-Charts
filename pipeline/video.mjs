@@ -73,7 +73,7 @@ const FAMC = { "Pop": "#ff5fa2", "Hip hop & rap": "#ffd23f", "Latin pop & urban"
 const scene = (p, o) => p.evaluate(({ o, FAMC }) => {
   const f = S.M.facts, pc = x => Math.round(100 * x) + "%";
   if (o.view !== S.view || o.twin !== S.twin) { if (o.fade != null) S.prev = { ...S.cols }; S.view = o.view; if (o.twin) S.twin = o.twin; }
-  S.fadeK = o.fade ?? 1; S.map.jumpTo({ center: o.center, zoom: o.zoom, bearing: 0, pitch: 0, padding: { top: 330, bottom: 300, left: 0, right: 0 } }); paint();
+  S.fadeK = o.fade ?? 1; S.map.jumpTo({ center: o.center, zoom: o.zoom, bearing: 0, pitch: 0, padding: { top: 400, bottom: 300, left: 0, right: 0 } }); paint();
   const VV = document.getElementById("vv"), VB = document.getElementById("vb");
   if (o.view === "genre") {
     VV.innerHTML = `What the world played<small>Colour = each country's main genre. Label = its #1 artist of 2026 (Spotify + YouTube).</small>`;
@@ -108,8 +108,8 @@ const scene = (p, o) => p.evaluate(({ o, FAMC }) => {
 
 // ── 3 posters ──
 let p = await open();
-for (const [name, o] of [["post1_genres", { view: "genre", center: [5, 28], zoom: 2.25 }], ["post2_homegrown", { view: "home", center: [12, 22], zoom: 2.15 }],
-  ["post3_twins", { view: "twins", twin: "gb", center: [8, 38], zoom: 2.6 }], ["post3b_spotify_vs_youtube", { view: "gap", center: [5, 30], zoom: 2.2 }]]) {
+for (const [name, o] of [["post1_genres", { view: "genre", center: [5, 30], zoom: 2.1 }], ["post2_homegrown", { view: "home", center: [12, 22], zoom: 2.15 }],
+  ["post3_twins", { view: "twins", twin: "gb", center: [10, 40], zoom: 2.25 }], ["post3b_spotify_vs_youtube", { view: "gap", center: [5, 30], zoom: 2.2 }]]) {
   await scene(p, o); await settle(p); await p.evaluate(() => placeLabels()); await p.waitForTimeout(500);
   await p.screenshot({ path: `${OUT}/${name}.png` }); console.log("poster", name);
 }
@@ -121,8 +121,8 @@ const seg = (n, fn) => { for (let i = 0; i < n; i++) plan.push(fn(i / (n - 1 || 
 const ease = k => k * k * (3 - 2 * k);
 seg(100, k => ({ view: "genre", center: [-95 + 160 * ease(k), 22 + 10 * Math.sin(Math.PI * k)], zoom: 1.85 + 0.35 * Math.sin(Math.PI * k) }));
 seg(42, k => ({ view: "home", fade: Math.min(1, k * 4), center: [65 - 50 * ease(k), 22], zoom: 1.9 + 0.2 * k }));
-seg(45, k => ({ view: "twins", twin: "gb", fade: Math.min(1, k * 4), center: [15 - 7 * ease(k), 30 + 8 * ease(k)], zoom: 2.1 + 0.5 * ease(k) }));
-seg(40, k => ({ view: "twins", twin: "gb", center: [8, 38], zoom: 2.6, card: Math.min(1, k * 4) }));
+seg(45, k => ({ view: "twins", twin: "gb", fade: Math.min(1, k * 4), center: [15 - 5 * ease(k), 30 + 10 * ease(k)], zoom: 2.0 + 0.25 * ease(k) }));
+seg(40, k => ({ view: "twins", twin: "gb", center: [10, 40], zoom: 2.25, card: Math.min(1, k * 4) }));
 let n = 0;
 for (const o of plan) {
   await scene(p, o); await settle(p); await p.evaluate(() => placeLabels());
