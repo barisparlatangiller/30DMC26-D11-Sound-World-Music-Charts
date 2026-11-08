@@ -3,3 +3,7 @@ logs/
 __pycache__/
 media/
 node_modules/
+docs/data/*.json
+docs/data/*.geojson
+docs/data/*.gpkg
+docs/data/*.log
