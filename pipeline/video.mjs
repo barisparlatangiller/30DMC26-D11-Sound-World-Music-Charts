@@ -110,7 +110,7 @@ const scene = (p, o) => p.evaluate(({ o, FAMC }) => {
 // ── 3 posters ──
 let p = await open();
 for (const [name, o] of [["post1_genres", { view: "genre", center: [5, 30], zoom: 2.1 }], ["post2_homegrown", { view: "home", center: [12, 22], zoom: 2.15 }],
-  ["post3_twins", { view: "twins", twin: "gb", center: [10, 42], zoom: 2.35 }], ["post3b_spotify_vs_youtube", { view: "gap", center: [5, 30], zoom: 2.2 }]]) {
+  ["post3_twins", { view: "twins", twin: "gb", center: [10, 40], zoom: 2.05 }], ["post3b_spotify_vs_youtube", { view: "gap", center: [5, 30], zoom: 2.2 }]]) {
   await scene(p, o); await settle(p); await p.evaluate(() => placeLabels()); await p.waitForTimeout(500);
   await p.screenshot({ path: `${OUT}/${name}.png` }); console.log("poster", name);
 }
@@ -122,8 +122,8 @@ const seg = (n, fn) => { for (let i = 0; i < n; i++) plan.push(fn(i / (n - 1 || 
 const ease = k => k * k * (3 - 2 * k);
 seg(100, k => ({ view: "genre", center: [-95 + 160 * ease(k), 22 + 10 * Math.sin(Math.PI * k)], zoom: 1.85 + 0.35 * Math.sin(Math.PI * k) }));
 seg(42, k => ({ view: "home", fade: Math.min(1, k * 4), center: [65 - 50 * ease(k), 22], zoom: 1.9 + 0.2 * k }));
-seg(45, k => ({ view: "twins", twin: "gb", fade: Math.min(1, k * 4), center: [15 - 5 * ease(k), 30 + 10 * ease(k)], zoom: 2.0 + 0.25 * ease(k) }));
-seg(40, k => ({ view: "twins", twin: "gb", center: [10, 40], zoom: 2.25, card: Math.min(1, k * 4) }));
+seg(45, k => ({ view: "twins", twin: "gb", fade: Math.min(1, k * 4), center: [15 - 5 * ease(k), 30 + 10 * ease(k)], zoom: 1.95 + 0.1 * ease(k) }));
+seg(40, k => ({ view: "twins", twin: "gb", center: [10, 40], zoom: 2.05, card: Math.min(1, k * 4) }));
 let n = 0;
 for (const o of plan) {
   await scene(p, o); await settle(p); await p.evaluate(() => placeLabels());
